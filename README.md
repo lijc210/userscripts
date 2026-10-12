@@ -61,5 +61,3 @@
 ## 许可证
 
 本项目使用 [MIT License]([https://www.gnu.org/licenses/agpl-3.0.html](https://github.com/lijc210/userscripts/blob/main/LICENSE))。
-
-本项目基于原作者的脚本。衍生版本的分发应遵守适用的许可证要求，并保留必要的版权和许可证声明。
