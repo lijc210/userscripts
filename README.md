@@ -6,10 +6,13 @@
 
 ## 功能特性
 
-- **相对时间转换**：将 GitHub 页面上的相对时间转换为绝对日期。
-- **悬停显示时间**：鼠标悬停在日期上时，显示具体的时分秒。
-- **自动适配语言**：根据浏览器语言设置日期格式。
-- **动态页面支持**：自动处理 GitHub 页面动态加载的时间元素。
+- **相对时间转换**：将 GitHub 页面上的相对时间（如 `2 days ago`）转换为绝对日期（如 `26-10-10`）。
+- **悬停显示时间**：鼠标悬停或键盘聚焦在日期上时，显示具体的时分秒（如 `16:04:58`）。
+- **自动适配语言**：根据浏览器语言自动选择日期格式，支持简体中文、繁体中文和英文。
+- **动态页面支持**：监听 DOM 变化，自动处理 GitHub 动态加载的时间元素，包括异步渲染和 SPA 页面切换。
+- **仓库首页保持原样**：仓库首页（`/owner/repo`）不进行转换，issues、Pull requests、commits 等其他页面正常转换。
+- **深浅色模式适配**：提示框自动适配浏览器的深色 / 浅色模式。
+- **无效日期保护**：无法解析的日期显示"无效日期"占位，不影响页面其他功能。
 - **轻量简洁**：使用原生 JavaScript 实现，无需额外依赖。
 
 ## 安装
@@ -41,13 +44,21 @@
 
 ## 使用说明
 
-安装完成后，访问 GitHub 支持的页面并刷新。
+安装完成后，访问 GitHub 并刷新页面。
 
-- 原本显示相对时间的位置将显示绝对日期。
-- 将鼠标悬停在日期上，可以查看具体的时分秒。
+- 原本显示相对时间的位置将显示绝对日期（两位数年份）。
+- 将鼠标悬停在日期上（或使用键盘聚焦），可以查看具体的时分秒。
 - 日期和时间根据浏览器语言设置进行格式化。
 
-> 注意：脚本仅匹配 `https://github.com/*`，并排除了 `https://github.com/topics/*` 页面。
+### 生效范围
+
+| 页面 | 是否转换 |
+| --- | --- |
+| issues、Pull requests、commits、releases、文件浏览等 | ✅ 转换 |
+| 仓库首页（如 `https://github.com/owner/repo`） | ❌ 保持原始相对时间 |
+| `https://github.com/topics/*` | ❌ 排除 |
+
+> 注意：脚本仅匹配 `https://github.com/*`。GitHub 为单页应用（SPA），从仓库首页切换到其他页面时无需刷新，转换会自动生效。
 
 ## 更新
 
@@ -56,8 +67,10 @@
 - **源代码**：[github-time-format-converter.user.js](https://github.com/lijc210/userscripts/blob/main/github-time-format-converter.user.js)
 - **原始文件**：[Raw 文件](https://raw.githubusercontent.com/lijc210/userscripts/main/github-time-format-converter.user.js)
 
-脚本更新后，可以在 Tampermonkey 管理面板中检查更新。自动更新是否生效取决于脚本的更新配置。
+脚本更新后，可以在 Tampermonkey 管理面板中检查更新。
+
+> 提示：如果点击更新一直提示"暂时没有更新"，可能是旧版本脚本的更新源配置不完整。删除后通过上方安装链接重新安装即可解决。
 
 ## 许可证
 
-本项目使用 [MIT License]([https://www.gnu.org/licenses/agpl-3.0.html](https://github.com/lijc210/userscripts/blob/main/LICENSE))。
+本项目使用 [MIT License](https://github.com/lijc210/userscripts/blob/main/LICENSE)。
