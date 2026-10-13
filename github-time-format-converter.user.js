@@ -5,18 +5,18 @@
 // @description        Convert relative times on GitHub to absolute date and time
 // @description:zh-CN  将 GitHub 页面上的相对时间转换为绝对日期和时间
 // @description:zh-TW  將 GitHub 頁面上的相對時間轉換成絕對日期與時間
-// @version            1.4.0
-// @icon               https://raw.githubusercontent.com/lijc210/UserScripts/main/Icons/Github-Time-Format-Converter-Icon.svg
-// @author             念柚
-// @namespace          https://github.com/lijc210/UserScripts
-// @supportURL         https://github.com/lijc210/UserScripts/issues
-// @license            AGPL-3.0
+// @version            0.0.1
+// @icon               https://raw.githubusercontent.com/lijc210/userscripts/main/Icons/Github-Time-Format-Converter-Icon.svg
+// @author             lijc210
+// @namespace          https://github.com/lijc210/userscripts
+// @supportURL         https://github.com/lijc210/userscripts/issues
+// @license            MIT
 // @match              https://github.com/*
 // @exclude            https://github.com/topics/*
 // @grant              GM_addStyle
 // @run-at             document-idle
-// @downloadURL https://update.greasyfork.org/scripts/
-// @updateURL https://update.greasyfork.org/scripts/
+// @downloadURL        https://raw.githubusercontent.com/lijc210/userscripts/main/github-time-format-converter.user.js
+// @updateURL          https://raw.githubusercontent.com/lijc210/userscripts/main/github-time-format-converter.user.js
 // ==/UserScript==
 
 (function () {
