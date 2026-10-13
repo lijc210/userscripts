@@ -264,7 +264,8 @@
 
       const datetime = el.getAttribute("datetime");
       if (!datetime) {
-        el.classList.add(CONFIG.CLASSES.PROCESSED);
+        // GitHub 有时先插入元素、随后才异步设置 datetime 属性。
+        // 这里不能打 PROCESSED 标记，否则元素会永远被跳过。
         return;
       }
 
@@ -332,8 +333,15 @@
       const observer = new MutationObserver((mutations) => {
         const elements = new Set();
 
-        for (const { addedNodes } of mutations) {
-          for (const node of addedNodes) {
+        for (const mutation of mutations) {
+          if (mutation.type === "attributes") {
+            // GitHub 的 React 会先插入 <relative-time> 再异步设置
+            // datetime 属性，必须监听属性变化才能捕获这一时序。
+            if (mutation.target.matches?.(selector)) elements.add(mutation.target);
+            continue;
+          }
+
+          for (const node of mutation.addedNodes) {
             if (node.nodeType !== Node.ELEMENT_NODE) continue;
             if (node.matches?.(selector)) elements.add(node);
             node.querySelectorAll?.(selector).forEach((el) => elements.add(el));
@@ -343,7 +351,12 @@
         elements.forEach((el) => this.convertElement(el));
       });
 
-      observer.observe(document.body, { childList: true, subtree: true });
+      observer.observe(document.body, {
+        childList: true,
+        subtree: true,
+        attributes: true,
+        attributeFilter: ["datetime"],
+      });
     },
 
     init() {
