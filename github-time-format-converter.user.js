@@ -45,6 +45,21 @@
       RELATIVE_TIME: "relative-time:not(.time-converter-processed)",
       PROCESSED_SPAN: "span.time-converter-processed[data-tooltip-time]",
     },
+    PAGES: {
+      // 路径恰好为两段（/owner/repo）时视为仓库首页，不进行转换。
+      // GitHub 自身页面的第一段是保留词（如 /settings/keys、/notifications/subscriptions），
+      // 它们不是仓库首页，应继续转换。GitHub 禁止注册这些保留词作为用户名。
+      RESERVED_FIRST_SEGMENTS: [
+        "settings", "notifications", "login", "logout", "signup", "join",
+        "session", "auth", "new", "search", "marketplace", "sponsors", "orgs",
+        "topics", "trending", "collections", "events", "about", "features",
+        "solutions", "enterprise", "pricing", "customer-stories", "resources",
+        "readme", "site", "contact", "security", "apps", "spark", "stars",
+        "dashboard", "copilot", "codespaces", "explore", "account", "admin",
+        "mine", "import", "git-guides", "watching", "issues", "pulls",
+        "discussions",
+      ],
+    },
     I18N: {
       "zh-CN": { INVALID: "无效日期" },
       "zh-TW": { INVALID: "無效日期" },
@@ -257,7 +272,17 @@
       return `${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
     },
 
+    // 仓库首页（/owner/repo）不进行转换，其余页面正常转换。
+    // 不能只在启动时判断后退出：GitHub 是 SPA 导航，启动后可能从仓库首页
+    // 切换到其他页面（或反之），因此每次处理元素时都要重新判断。
+    isActive() {
+      const segments = location.pathname.split("/").filter(Boolean);
+      if (segments.length !== 2) return true;
+      return CONFIG.PAGES.RESERVED_FIRST_SEGMENTS.includes(segments[0]);
+    },
+
     convertElement(el) {
+      if (!this.isActive()) return;
       if (!(el instanceof Element) || el.classList.contains(CONFIG.CLASSES.PROCESSED)) {
         return;
       }
